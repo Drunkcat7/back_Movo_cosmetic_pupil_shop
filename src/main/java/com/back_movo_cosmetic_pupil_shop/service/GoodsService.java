@@ -4,6 +4,8 @@ import com.back_movo_cosmetic_pupil_shop.entity.Goods;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
+
 /**
  * (Goods)表服务接口
  *
@@ -19,5 +21,13 @@ public interface GoodsService {
      * @return 实例对象
      */
     Goods queryById(Integer goodId);
+
+
+    /**
+     * 首页-查询商品表全部数据
+     * @return 对象列表
+     */
+    List<Goods> queryAllGoods();
+
 
 }

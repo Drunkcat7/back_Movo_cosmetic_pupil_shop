@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,6 +43,18 @@ public class GoodsController {
         map.put("shufflingFigure", JSONArray.parseArray(goods.getShufflingFigure()));
         map.put("bottomImg", goods.getBottomImg());
         return map;
+    }
+
+
+    /**
+     * 首页-查询 全部商品
+     *
+     * @return 对象列表
+     */
+    @GetMapping("/AllGoods")
+    public List<Goods> queryAllGoods(){
+        List<Goods> goodsList = goodsService.queryAllGoods();
+        return goodsList;
     }
 
 

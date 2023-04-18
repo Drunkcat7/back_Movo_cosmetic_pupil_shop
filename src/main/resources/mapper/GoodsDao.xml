@@ -31,6 +31,16 @@
         where good_id = #{goodId}
     </select>
 
+<!--    查询全部-->
+    <select id="queryAllGoods" resultMap="GoodsMap">
+        select good_id,
+               gname,
+               price,
+               main_img,
+               class_id
+        from goods
+    </select>
+
 
 <!--    ================================分界线=============================================-->
     <!--查询指定行数据-->
