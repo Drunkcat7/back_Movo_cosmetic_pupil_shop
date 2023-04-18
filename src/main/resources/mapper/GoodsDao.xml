@@ -35,8 +35,13 @@
     <select id="queryAllGoods" resultMap="GoodsMap">
         select good_id,
                gname,
+               introduce,
                price,
                main_img,
+               top_img,
+               shuffling_figure,
+               bottom_img,
+               details_figure,
                class_id
         from goods
     </select>

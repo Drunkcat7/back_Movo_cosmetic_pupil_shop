@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,11 +53,22 @@ public class GoodsController {
      * @return 对象列表
      */
     @GetMapping("/AllGoods")
-    public List<Goods> queryAllGoods(){
+    public List<Map<String,Object>> queryAllGoods(){
+//        最后过滤完要返回的list
+        List<Map<String,Object>> goodsHomeList = new ArrayList<Map<String,Object>>();
+//        查询goods全表的list
         List<Goods> goodsList = goodsService.queryAllGoods();
-        return goodsList;
+        for (Goods goodsItem : goodsList) {
+            Map<String,Object> map = new HashMap<>();
+            map.put("goodId",goodsItem.getGoodId());
+            map.put("gname",goodsItem.getGname());
+            map.put("price",goodsItem.getPrice());
+            map.put("mainImg",goodsItem.getMainImg());
+            map.put("classId",goodsItem.getClassId());
+            goodsHomeList.add(map);
+        }
+
+        return goodsHomeList;
     }
-
-
 }
 
