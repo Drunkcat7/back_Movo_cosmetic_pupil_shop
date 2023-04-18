@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -55,20 +56,57 @@ public class AccountController {
         return ResponseEntity.ok(GetStatus.get(this.accountService.login(user, password)));
     }
 
-    @GetMapping("/admin/test")
-    public Map<String, Object> adminTest(@CurrentUser CurrentUserInfo currentUserInfo) {
+
+    /**
+     * 查询全部普通用户
+     *
+     * @return 返回用户信息
+     */
+    @GetMapping("/admin/userAll")
+    public List<Account> queryUserAll() {
+        return this.accountService.queryUserAll();
+    }
+
+    /**
+     * 修改用户信息
+     *
+     * @param account
+     * @return 修改过后的数据
+     */
+    @PutMapping("/admin/updateUser")
+    public Account updateUser(Account account) {
+        return this.accountService.update(account);
+    }
+
+    /**
+     * 删除用户
+     *
+     * @param uid
+     * @return 删除的信息
+     */
+    @GetMapping("/admin/delUser")
+    public Map<String, Object> delUser(Integer uid) {
         Map<String, Object> map = new HashMap<>();
-        map.put("data", currentUserInfo);
-        map.put("msg", "admin");
+        Boolean isDel = this.accountService.deleteById(uid);
+        if (isDel) {
+            map.put("msg", "删除成功");
+            map.put("status", 200);
+        } else {
+            map.put("msg", "删除失败");
+            map.put("status", 500);
+        }
         return map;
     }
 
-    @GetMapping("/user/test")
-    public Map<String, Object> UseTest(@CurrentUser CurrentUserInfo currentUserInfo) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("data", currentUserInfo);
-        return map;
+    /**
+     * 添加用户
+     *
+     * @param account 实体
+     * @return 新增结果
+     */
+    @PostMapping("/admin/insertUser")
+    public ResponseEntity<Account> insertUser(Account account) {
+        return ResponseEntity.ok(this.accountService.insert(account));
     }
-
 }
 

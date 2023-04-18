@@ -4,6 +4,7 @@ import com.back_movo_cosmetic_pupil_shop.entity.Account;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,10 +26,33 @@ public interface AccountService {
 
     /**
      * 用户登录
+     *
      * @param user
      * @param password
      * @return 登录的对象
      */
-    Map<String,Object> login(String user, String password);
+    Map<String, Object> login(String user, String password);
+
+    /**
+     * 查询全部用户
+     *
+     * @return 用户list
+     */
+    List<Account> queryUserAll();
+
+    /**
+     * 修改用户信息
+     *
+     * @param account
+     * @return 影响行数
+     */
+    Account update(Account account);
+
+    /**
+     * 通过uid删除用户
+     * @param uid
+     * @return 是否成功
+     */
+    Boolean deleteById(Integer uid);
 
 }

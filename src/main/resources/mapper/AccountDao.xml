@@ -23,5 +23,40 @@
         where user = #{user}
           and password = #{password}
     </select>
-</mapper>
+    <!--查询全部普通用户-->
+    <select id="queryUserAll" resultMap="AccountMap">
+        select uid,
+               user,
+               password,
+               level
+        from account
+        where level = 0
+    </select>
+    <!--通过主键修改数据-->
+    <update id="update">
+        update account
+        <set>
+            <if test="user != null and user != ''">
+                user = #{user},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password}
+            </if>
+        </set>
+        where uid = #{uid} and level = 0
+    </update>
+    <!--查单个用户-->
+    <select id="queryById" resultMap="AccountMap">
+        select uid,
+               user,
+               password,
+               level
+        from account
+        where uid = #{uid}
+    </select>
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from account where uid = #{uid}
+    </delete>
 
+</mapper>
