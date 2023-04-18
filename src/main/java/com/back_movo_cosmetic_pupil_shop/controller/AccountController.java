@@ -73,7 +73,7 @@ public class AccountController {
      * @param account
      * @return 修改过后的数据
      */
-    @PostMapping("/admin/updateUser")
+    @PutMapping("/admin/updateUser")
     public Account updateUser(Account account) {
         return this.accountService.update(account);
     }
