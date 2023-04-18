@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,6 +52,44 @@ public class AccountServiceImpl implements AccountService {
         String token = JwtUtil.getJwtToken(loginUser.getUid(), loginUser.getUser(), loginUser.getLevel());
         map.put("token", token);
         return map;
+    }
+
+
+    /**
+     * 查询全部用户
+     *
+     * @return 用户list
+     */
+    @Override
+    public List<Account> queryUserAll() {
+        return this.accountDao.queryUserAll();
+    }
+
+    /**
+     * 修改用户信息
+     *
+     * @param account
+     * @return 影响行数
+     */
+    @Override
+    public Account update(Account account) {
+        int count = this.accountDao.update(account);
+        if (count == 0) {
+            return null;
+        }
+        return this.accountDao.queryById(account.getUid());
+    }
+
+    /**
+     * 通过uid删除用户
+     *
+     * @param uid
+     * @return 是否成功
+     */
+    @Override
+    public Boolean deleteById(Integer uid) {
+        int i = this.accountDao.deleteById(uid);
+        return i != 0;
     }
 
 }
