@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.back_movo_cosmetic_pupil_shop.dao.GoodsDao">
+
+    <resultMap type="com.back_movo_cosmetic_pupil_shop.entity.Goods" id="GoodsMap">
+        <result property="goodId" column="good_id" jdbcType="INTEGER"/>
+        <result property="gname" column="gname" jdbcType="VARCHAR"/>
+        <result property="introduce" column="introduce" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="NUMERIC"/>
+        <result property="mainImg" column="main_img" jdbcType="VARCHAR"/>
+        <result property="topImg" column="top_img" jdbcType="VARCHAR"/>
+        <result property="shufflingFigure" column="shuffling_figure" jdbcType="VARCHAR"/>
+        <result property="bottomImg" column="bottom_img" jdbcType="VARCHAR"/>
+        <result property="detailsFigure" column="details_figure" jdbcType="VARCHAR"/>
+        <result property="classId" column="class_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="GoodsMap">
+        select good_id,
+               gname,
+               introduce,
+               price,
+               main_img,
+               top_img,
+               shuffling_figure,
+               bottom_img,
+               details_figure,
+               class_id
+        from goods
+        where good_id = #{goodId}
+    </select>
+
+
+<!--    ================================分界线=============================================-->
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="GoodsMap">
+        select
+        good_id, gname, introduce, price, main_img, top_img, shuffling_figure, bottom_img, details_figure, class_id
+        from goods
+        <where>
+            <if test="goodId != null">
+                and good_id = #{goodId}
+            </if>
+            <if test="gname != null and gname != ''">
+                and gname = #{gname}
+            </if>
+            <if test="introduce != null and introduce != ''">
+                and introduce = #{introduce}
+            </if>
+            <if test="price != null">
+                and price = #{price}
+            </if>
+            <if test="mainImg != null and mainImg != ''">
+                and main_img = #{mainImg}
+            </if>
+            <if test="topImg != null and topImg != ''">
+                and top_img = #{topImg}
+            </if>
+            <if test="shufflingFigure != null and shufflingFigure != ''">
+                and shuffling_figure = #{shufflingFigure}
+            </if>
+            <if test="bottomImg != null and bottomImg != ''">
+                and bottom_img = #{bottomImg}
+            </if>
+            <if test="detailsFigure != null and detailsFigure != ''">
+                and details_figure = #{detailsFigure}
+            </if>
+            <if test="classId != null">
+                and class_id = #{classId}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from goods
+        <where>
+            <if test="goodId != null">
+                and good_id = #{goodId}
+            </if>
+            <if test="gname != null and gname != ''">
+                and gname = #{gname}
+            </if>
+            <if test="introduce != null and introduce != ''">
+                and introduce = #{introduce}
+            </if>
+            <if test="price != null">
+                and price = #{price}
+            </if>
+            <if test="mainImg != null and mainImg != ''">
+                and main_img = #{mainImg}
+            </if>
+            <if test="topImg != null and topImg != ''">
+                and top_img = #{topImg}
+            </if>
+            <if test="shufflingFigure != null and shufflingFigure != ''">
+                and shuffling_figure = #{shufflingFigure}
+            </if>
+            <if test="bottomImg != null and bottomImg != ''">
+                and bottom_img = #{bottomImg}
+            </if>
+            <if test="detailsFigure != null and detailsFigure != ''">
+                and details_figure = #{detailsFigure}
+            </if>
+            <if test="classId != null">
+                and class_id = #{classId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="goodId" useGeneratedKeys="true">
+        insert into goods(gname, introduce, price, main_img, top_img, shuffling_figure, bottom_img, details_figure,
+                          class_id)
+        values (#{gname}, #{introduce}, #{price}, #{mainImg}, #{topImg}, #{shufflingFigure}, #{bottomImg},
+                #{detailsFigure}, #{classId})
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="goodId" useGeneratedKeys="true">
+        insert into goods(gname, introduce, price, main_img, top_img, shuffling_figure, bottom_img, details_figure,
+        class_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.gname}, #{entity.introduce}, #{entity.price}, #{entity.mainImg}, #{entity.topImg},
+            #{entity.shufflingFigure}, #{entity.bottomImg}, #{entity.detailsFigure}, #{entity.classId})
+        </foreach>
+        on duplicate key update
+        gname = values(gname),
+        introduce = values(introduce),
+        price = values(price),
+        main_img = values(main_img),
+        top_img = values(top_img),
+        shuffling_figure = values(shuffling_figure),
+        bottom_img = values(bottom_img),
+        details_figure = values(details_figure),
+        class_id = values(class_id)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update goods
+        <set>
+            <if test="gname != null and gname != ''">
+                gname = #{gname},
+            </if>
+            <if test="introduce != null and introduce != ''">
+                introduce = #{introduce},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="mainImg != null and mainImg != ''">
+                main_img = #{mainImg},
+            </if>
+            <if test="topImg != null and topImg != ''">
+                top_img = #{topImg},
+            </if>
+            <if test="shufflingFigure != null and shufflingFigure != ''">
+                shuffling_figure = #{shufflingFigure},
+            </if>
+            <if test="bottomImg != null and bottomImg != ''">
+                bottom_img = #{bottomImg},
+            </if>
+            <if test="detailsFigure != null and detailsFigure != ''">
+                details_figure = #{detailsFigure},
+            </if>
+            <if test="classId != null">
+                class_id = #{classId},
+            </if>
+        </set>
+        where good_id = #{goodId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from goods
+        where good_id = #{goodId}
+    </delete>
+
+</mapper>
+
