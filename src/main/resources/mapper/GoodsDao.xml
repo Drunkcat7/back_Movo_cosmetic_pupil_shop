@@ -46,7 +46,12 @@
         from goods
     </select>
 
-
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from goods
+        where good_id = #{goodId}
+    </delete>
 <!--    ================================分界线=============================================-->
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="GoodsMap">
@@ -189,12 +194,7 @@
         where good_id = #{goodId}
     </update>
 
-    <!--通过主键删除-->
-    <delete id="deleteById">
-        delete
-        from goods
-        where good_id = #{goodId}
-    </delete>
+
 
 </mapper>
 

@@ -35,10 +35,23 @@ public class GoodsServiceImpl implements GoodsService {
 
     /**
      * 首页-查询商品表全部数据
+     *
      * @return 对象列表
      */
     @Override
     public List<Goods> queryAllGoods() {
         return this.goodsDao.queryAllGoods();
+    }
+
+    /**
+     * 通过主键删除数据
+     *
+     * @param goodId 主键
+     * @return 是否删除成功
+     */
+    @Override
+    public Boolean deleteById(Integer goodId) {
+        int i = this.goodsDao.deleteById(goodId);
+        return i != 0;
     }
 }

@@ -29,5 +29,12 @@ public interface GoodsService {
      */
     List<Goods> queryAllGoods();
 
+    /**
+     * 通过主键删除数据
+     *
+     * @param goodId 主键
+     * @return 影响行数
+     */
+    Boolean deleteById(Integer goodId);
 
 }

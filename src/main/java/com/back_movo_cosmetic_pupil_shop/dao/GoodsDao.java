@@ -15,22 +15,21 @@ import java.util.List;
 public interface GoodsDao {
 
     /**
-     * 首页-查询商品表全部数据
-     * @return 对象列表
-     */
-    List<Goods> queryAllGoods();
-
-
-
-    /** ----------------------分～杰线---------------------- **/
-
-    /**
      * 通过ID查询单条数据
      *
      * @param goodId 主键
      * @return 实例对象
      */
     Goods queryById(Integer goodId);
+
+    /**
+     * 首页-查询商品表全部数据
+     * @return 对象列表
+     */
+    List<Goods> queryAllGoods();
+
+    /** ----------------------分～杰线---------------------- **/
+
 
     /**
      * 查询指定行数据
