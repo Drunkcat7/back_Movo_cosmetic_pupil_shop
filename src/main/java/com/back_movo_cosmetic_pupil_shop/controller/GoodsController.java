@@ -56,6 +56,23 @@ public class GoodsController {
         List<Map<String, Object>> goodsHomeList = new ArrayList<>();
         //查询goods全表的list
         List<Goods> goodsList = goodsService.queryAllGoods();
+        return getGoodsMaps(goodsHomeList, goodsList);
+    }
+
+    /**
+     * 分类页-根据class_id(类别id) 查询
+     * @return 对象列表
+     */
+    @GetMapping("/TypeGoods")
+    public List<Map<String,Object>> queryByClassId(Integer classId){
+//        最后过滤完要返回的list
+        List<Map<String,Object>> goodsHomeList = new ArrayList<Map<String,Object>>();
+//        查询goods全表的list
+        List<Goods> goodsList = goodsService.queryByClassId(classId);
+        return getGoodsMaps(goodsHomeList, goodsList);
+    }
+
+    private List<Map<String, Object>> getGoodsMaps(List<Map<String, Object>> goodsHomeList, List<Goods> goodsList) {
         for (Goods goodsItem : goodsList) {
             Map<String, Object> map = new HashMap<>();
             map.put("goodId", goodsItem.getGoodId());

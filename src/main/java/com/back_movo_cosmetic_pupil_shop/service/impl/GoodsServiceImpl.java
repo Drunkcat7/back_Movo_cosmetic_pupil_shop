@@ -34,6 +34,15 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     /**
+     * 分类页-根据class_id(类别id) 查询
+     * @return 对象列表
+     */
+    @Override
+    public List<Goods> queryByClassId(Integer classId) {
+        return this.goodsDao.queryAllGoods(classId);
+    }
+
+    /**
      * 首页-查询商品表全部数据
      *
      * @return 对象列表
@@ -54,4 +63,6 @@ public class GoodsServiceImpl implements GoodsService {
         int i = this.goodsDao.deleteById(goodId);
         return i != 0;
     }
+
+
 }

@@ -30,6 +30,12 @@ public interface GoodsDao {
 
     /** ----------------------分～杰线---------------------- **/
 
+    /**
+     * 分类页-根据class_id(类别id) 查询
+     * @return 对象列表
+     */
+    List<Goods> queryAllGoods(@Param("classId") Integer classId);
+
 
     /**
      * 查询指定行数据

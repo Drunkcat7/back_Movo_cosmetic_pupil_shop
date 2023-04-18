@@ -44,6 +44,12 @@
                details_figure,
                class_id
         from goods
+        <where>
+            <!--    根据class_id(类别id) 查询-->
+        <if test="classId != null">
+            and class_id = #{classId}
+        </if>
+        </where>
     </select>
 
     <!--通过主键删除-->
@@ -193,6 +199,23 @@
         </set>
         where good_id = #{goodId}
     </update>
+
+    <!--    根据class_id(类别id) 查询-->
+<!--    <select id="queryByClassId" resultMap="GoodsMap">-->
+<!--        select good_id,-->
+<!--               gname,-->
+<!--               introduce,-->
+<!--               price,-->
+<!--               main_img,-->
+<!--               top_img,-->
+<!--               shuffling_figure,-->
+<!--               bottom_img,-->
+<!--               details_figure,-->
+<!--               class_id-->
+<!--        from goods-->
+<!--        where class_id = #{classId}-->
+<!--    </select>-->
+
 
 
 

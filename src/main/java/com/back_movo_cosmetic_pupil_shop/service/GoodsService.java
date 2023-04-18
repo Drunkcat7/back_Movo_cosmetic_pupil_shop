@@ -22,6 +22,12 @@ public interface GoodsService {
      */
     Goods queryById(Integer goodId);
 
+    /**
+     * 分类页-根据class_id(类别id) 查询
+     * @return 对象列表
+     */
+    List<Goods> queryByClassId(Integer classId);
+
 
     /**
      * 首页-查询商品表全部数据
