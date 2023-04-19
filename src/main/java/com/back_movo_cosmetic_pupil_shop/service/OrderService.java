@@ -1,11 +1,13 @@
 package com.back_movo_cosmetic_pupil_shop.service;
 
 import com.back_movo_cosmetic_pupil_shop.entity.Order;
+import com.back_movo_cosmetic_pupil_shop.entity.OrderDetail;
 import com.back_movo_cosmetic_pupil_shop.entity.OrderItem;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * (Order)表服务接口
@@ -22,14 +24,15 @@ public interface OrderService {
      */
     List<OrderItem> queryOrderManageAll();
 
-    /** ——-——————————-————--婚戒线————-----——*/
-
     /**
-     * 通过ID查询单条数据
+     * 提交订单
      *
-     * @param orderId 主键
-     * @return 实例对象
+     * @param order
+     * @param orderDetails
+     * @return
      */
-    Order queryById(Integer orderId);
+    Map<String, Object> submit(Order order, List<OrderDetail> orderDetails);
+
+    /** ——-——————————-————--婚戒线————-----——*/
 
 }

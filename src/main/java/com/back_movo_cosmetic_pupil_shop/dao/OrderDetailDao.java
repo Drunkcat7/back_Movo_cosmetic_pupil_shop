@@ -13,6 +13,16 @@ import java.util.List;
  * @since 2023-04-19 10:46:50
  */
 public interface OrderDetailDao {
+    
+    /**
+     * 新增数据
+     *
+     * @param orderDetail 实例对象
+     * @return 影响行数
+     */
+    int insert(OrderDetail orderDetail);
+
+    /** ----------------------分～杰线---------------------- **/
 
     /**
      * 通过ID查询单条数据
@@ -39,13 +49,6 @@ public interface OrderDetailDao {
      */
     long count(OrderDetail orderDetail);
 
-    /**
-     * 新增数据
-     *
-     * @param orderDetail 实例对象
-     * @return 影响行数
-     */
-    int insert(OrderDetail orderDetail);
 
     /**
      * 批量新增或按主键更新数据（MyBatis原生foreach方法）

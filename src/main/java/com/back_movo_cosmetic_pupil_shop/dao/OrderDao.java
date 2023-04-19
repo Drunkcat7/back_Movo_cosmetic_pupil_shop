@@ -17,9 +17,20 @@ public interface OrderDao {
 
     /**
      * 查询 订单管理 数据
+     *
      * @return 对象列表
      */
     List<OrderItem> queryOrderManageAll();
+
+    /**
+     * 新增数据
+     *
+     * @param order 实例对象
+     * @return 影响行数
+     */
+    int insert(Order order);
+
+    Integer queryLastOrderByUid(@Param("uid") Integer uid);
 
     /** ——----——-——————--分界线--——————----——————-——————-----—— */
 
@@ -48,13 +59,6 @@ public interface OrderDao {
      */
     long count(Order order);
 
-    /**
-     * 新增数据
-     *
-     * @param order 实例对象
-     * @return 影响行数
-     */
-    int insert(Order order);
 
     /**
      * 批量新增或按主键更新数据（MyBatis原生foreach方法）

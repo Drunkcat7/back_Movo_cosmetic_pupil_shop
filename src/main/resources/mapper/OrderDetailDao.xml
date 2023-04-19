@@ -10,6 +10,14 @@
         <result property="num" column="num" jdbcType="INTEGER"/>
     </resultMap>
 
+    <!--添加订单详情-->
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="orderId" useGeneratedKeys="true">
+        insert into order_detail(order_id,good_id, g_type_id, price, num)
+        values (#{orderId},#{goodId}, #{gTypeId}, #{price}, #{num})
+    </insert>
+
+    <!--    ================================分界线=============================================-->
     <!--查询单个-->
     <select id="queryById" resultMap="OrderDetailMap">
         select order_id,
@@ -68,12 +76,6 @@
             </if>
         </where>
     </select>
-
-    <!--新增所有列-->
-    <insert id="insert" keyProperty="orderId" useGeneratedKeys="true">
-        insert into order_detail(good_id, price, num)
-        values (#{goodId}, #{price}, #{num})
-    </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="orderId" useGeneratedKeys="true">
         insert into order_detail(good_id, price, num)

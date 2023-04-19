@@ -55,8 +55,19 @@
           AND order_detail.good_id = goods.good_id
           AND goods.good_id = good_types.good_id
     </select>
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="orderId" useGeneratedKeys="true">
+        insert into `order`(uid, product_status, price_sum, address_id)
+        values (#{uid}, #{productStatus}, #{priceSum}, #{addressId})
+    </insert>
 
-<!--    ～～～～～～～～～～～～婚戒线～～～～～～～～～～～～～～～～～～～～～～-->
+    <select id="queryLastOrderByUid" resultType="java.lang.Integer">
+        SELECT order_id
+        FROM `order`
+        WHERE uid = #{uid} and order_id = (SELECT MAX(order_id) FROM `order`);
+    </select>
+
+    <!--    ～～～～～～～～～～～～婚戒线～～～～～～～～～～～～～～～～～～～～～～-->
     <!--查询单个-->
     <select id="queryById" resultMap="OrderMap">
         select order_id,
@@ -115,12 +126,6 @@
             </if>
         </where>
     </select>
-
-    <!--新增所有列-->
-    <insert id="insert" keyProperty="orderId" useGeneratedKeys="true">
-        insert into order(uid, product_status, price_sum, address_id)
-        values (#{uid}, #{productStatus}, #{priceSum}, #{addressId})
-    </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="orderId" useGeneratedKeys="true">
         insert into order(uid, product_status, price_sum, address_id)

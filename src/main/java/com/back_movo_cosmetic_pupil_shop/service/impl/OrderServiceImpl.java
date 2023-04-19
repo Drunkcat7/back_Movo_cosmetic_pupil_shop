@@ -1,7 +1,9 @@
 package com.back_movo_cosmetic_pupil_shop.service.impl;
 
+import com.back_movo_cosmetic_pupil_shop.dao.OrderDetailDao;
 import com.back_movo_cosmetic_pupil_shop.entity.Order;
 import com.back_movo_cosmetic_pupil_shop.dao.OrderDao;
+import com.back_movo_cosmetic_pupil_shop.entity.OrderDetail;
 import com.back_movo_cosmetic_pupil_shop.entity.OrderItem;
 import com.back_movo_cosmetic_pupil_shop.service.OrderService;
 import org.springframework.stereotype.Service;
@@ -10,7 +12,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * (Order)表服务实现类
@@ -22,6 +26,8 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
     @Resource
     private OrderDao orderDao;
+    @Resource
+    private OrderDetailDao orderDetailDao;
 
     @Override
     public List<OrderItem> queryOrderManageAll() {
@@ -31,13 +37,34 @@ public class OrderServiceImpl implements OrderService {
     /** -------------分界线------------- */
 
     /**
-     * 通过ID查询单条数据
+     * 提交订单
      *
-     * @param orderId 主键
-     * @return 实例对象
+     * @param order
+     * @param orderDetails
+     * @return
      */
     @Override
-    public Order queryById(Integer orderId) {
-        return this.orderDao.queryById(orderId);
+    public Map<String, Object> submit(Order order, List<OrderDetail> orderDetails) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            //添加Order表的数据
+            this.orderDao.insert(order);
+            //System.out.println("uid" + order.getUid());
+            Integer orderId = this.orderDao.queryLastOrderByUid(order.getUid());
+
+            //循环添加orderDetails表的数据
+            for (OrderDetail orderDetail : orderDetails) {
+                orderDetail.setOrderId(orderId);
+                this.orderDetailDao.insert(orderDetail);
+            }
+            map.put("status", 200);
+            map.put("msg", "提交订单成功");
+        } catch (Exception e) {
+            map.put("status", 500);
+            map.put("msg", "提交订单失败");
+            System.out.println(e.getMessage());
+            return map;
+        }
+        return map;
     }
 }

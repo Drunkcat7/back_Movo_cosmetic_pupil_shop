@@ -1,5 +1,6 @@
 package com.back_movo_cosmetic_pupil_shop.controller;
 
+import com.back_movo_cosmetic_pupil_shop.entity.AppOrder;
 import com.back_movo_cosmetic_pupil_shop.entity.Order;
 import com.back_movo_cosmetic_pupil_shop.entity.OrderDetail;
 import com.back_movo_cosmetic_pupil_shop.entity.OrderItem;
@@ -32,34 +33,20 @@ public class OrderController {
     private OrderService orderService;
 
     /**
-     * 通过主键查询单条数据
-     *
-     * @param id 主键
-     * @return 单条数据
-     */
-    @GetMapping("{id}")
-    public ResponseEntity<Order> queryById(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(this.orderService.queryById(id));
-    }
-
-    /**
      * 提交订单
      *
-     * @param priceSum     总价
-     * @param addressId    地址id
-     * @param orderDetails 订单详情
-     * @param user         token解析的用户信息
+     * @param appOrder==>包含订单,和订单详情 订单==> priceSum, addressId
+     * @param user                  token解析的用户信息
      * @return map
      */
     @PostMapping("/user/submit")
-    public Map<String, Object> submit(Integer priceSum, Integer addressId, List<OrderDetail> orderDetails,
-                                      @CurrentUser CurrentUserInfo user) {
-        /*
-         *  添加Order表的数据
-         * 循环添加orderDetails表的数据
-         *
-         * */
-        return null;
+    public Map<String, Object> submit(@RequestBody AppOrder appOrder, @CurrentUser CurrentUserInfo user) {
+        Order order = new Order();
+        order.setPriceSum(appOrder.getPriceSum());
+        order.setAddressId(appOrder.getAddressId());
+        order.setUid(user.getUid());
+        order.setProductStatus(0);
+        return this.orderService.submit(order, appOrder.getOrderDetails());
     }
 
     @GetMapping("/admin/queryOrder")
