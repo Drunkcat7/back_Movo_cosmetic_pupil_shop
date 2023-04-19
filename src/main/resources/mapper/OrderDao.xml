@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.back_movo_cosmetic_pupil_shop.dao.OrderDao">
+
+    <resultMap type="com.back_movo_cosmetic_pupil_shop.entity.Order" id="OrderMap">
+        <result property="orderId" column="order_id" jdbcType="INTEGER"/>
+        <result property="uid" column="uid" jdbcType="INTEGER"/>
+        <result property="productStatus" column="product_status" jdbcType="INTEGER"/>
+        <result property="priceSum" column="price_sum" jdbcType="NUMERIC"/>
+        <result property="addressId" column="address_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="OrderMap">
+        select order_id,
+               uid,
+               product_status,
+               price_sum,
+               address_id
+        from order
+        where order_id = #{orderId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="OrderMap">
+        select
+        order_id, uid, product_status, price_sum, address_id
+        from order
+        <where>
+            <if test="orderId != null">
+                and order_id = #{orderId}
+            </if>
+            <if test="uid != null">
+                and uid = #{uid}
+            </if>
+            <if test="productStatus != null">
+                and product_status = #{productStatus}
+            </if>
+            <if test="priceSum != null">
+                and price_sum = #{priceSum}
+            </if>
+            <if test="addressId != null">
+                and address_id = #{addressId}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from order
+        <where>
+            <if test="orderId != null">
+                and order_id = #{orderId}
+            </if>
+            <if test="uid != null">
+                and uid = #{uid}
+            </if>
+            <if test="productStatus != null">
+                and product_status = #{productStatus}
+            </if>
+            <if test="priceSum != null">
+                and price_sum = #{priceSum}
+            </if>
+            <if test="addressId != null">
+                and address_id = #{addressId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="orderId" useGeneratedKeys="true">
+        insert into order(uid, product_status, price_sum, address_id)
+        values (#{uid}, #{productStatus}, #{priceSum}, #{addressId})
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="orderId" useGeneratedKeys="true">
+        insert into order(uid, product_status, price_sum, address_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.uid}, #{entity.productStatus}, #{entity.priceSum}, #{entity.addressId})
+        </foreach>
+        on duplicate key update
+        uid = values(uid),
+        product_status = values(product_status),
+        price_sum = values(price_sum),
+        address_id = values(address_id)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update order
+        <set>
+            <if test="uid != null">
+                uid = #{uid},
+            </if>
+            <if test="productStatus != null">
+                product_status = #{productStatus},
+            </if>
+            <if test="priceSum != null">
+                price_sum = #{priceSum},
+            </if>
+            <if test="addressId != null">
+                address_id = #{addressId},
+            </if>
+        </set>
+        where order_id = #{orderId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from order
+        where order_id = #{orderId}
+    </delete>
+
+</mapper>
+

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.back_movo_cosmetic_pupil_shop.dao.OrderDetailDao">
+
+    <resultMap type="com.back_movo_cosmetic_pupil_shop.entity.OrderDetail" id="OrderDetailMap">
+        <result property="orderId" column="order_id" jdbcType="INTEGER"/>
+        <result property="goodId" column="good_id" jdbcType="INTEGER"/>
+        <result property="gTypeId" column="g_type_id" jdbcType="INTEGER"/>
+        <result property="price" column="price" jdbcType="NUMERIC"/>
+        <result property="num" column="num" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="OrderDetailMap">
+        select order_id,
+               good_id,
+               g_type_id,
+               price,
+               num
+        from order_detail
+        where order_id = #{orderId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="OrderDetailMap">
+        select
+        order_id, good_id, g_type_id, price, num
+        from order_detail
+        <where>
+            <if test="orderId != null">
+                and order_id = #{orderId}
+            </if>
+            <if test="goodId != null">
+                and good_id = #{goodId}
+            </if>
+            <if test="gTypeId != null">
+                and g_type_id = #{gTypeId}
+            </if>
+            <if test="price != null">
+                and price = #{price}
+            </if>
+            <if test="num != null">
+                and num = #{num}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from order_detail
+        <where>
+            <if test="orderId != null">
+                and order_id = #{orderId}
+            </if>
+            <if test="goodId != null">
+                and good_id = #{goodId}
+            </if>
+            <if test="gTypeId != null">
+                and g_type_id = #{gTypeId}
+            </if>
+            <if test="price != null">
+                and price = #{price}
+            </if>
+            <if test="num != null">
+                and num = #{num}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="orderId" useGeneratedKeys="true">
+        insert into order_detail(good_id, price, num)
+        values (#{goodId}, #{price}, #{num})
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="orderId" useGeneratedKeys="true">
+        insert into order_detail(good_id, price, num)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.goodId}, #{entity.price}, #{entity.num})
+        </foreach>
+        on duplicate key update
+        good_id = values(good_id),
+        price = values(price),
+        num = values(num)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update order_detail
+        <set>
+            <if test="goodId != null">
+                good_id = #{goodId},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="num != null">
+                num = #{num},
+            </if>
+        </set>
+        where order_id = #{orderId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from order_detail
+        where order_id = #{orderId}
+    </delete>
+
+</mapper>
+
