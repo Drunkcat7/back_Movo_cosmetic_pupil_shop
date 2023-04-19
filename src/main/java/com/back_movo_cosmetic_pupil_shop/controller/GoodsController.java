@@ -93,7 +93,7 @@ public class GoodsController {
      * @param goodId 商品id
      * @return 商品实体
      */
-    @GetMapping("/admin/goodInfo")
+    @GetMapping({"/goodInfo","/admin/goodInfo"})
     public Map queryById(Integer goodId) {
         return this.goodsService.queryGoodInfo(goodId);
     }
