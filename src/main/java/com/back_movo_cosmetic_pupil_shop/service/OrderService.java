@@ -20,9 +20,10 @@ public interface OrderService {
 
     /**
      * 查询 订单管理 数据
+     *
      * @return 对象列表
      */
-    List<OrderItem> queryOrderManageAll();
+    List<Map<String, Object>> queryOrderManageAll(Integer uid);
 
     /**
      * 提交订单
@@ -36,10 +37,11 @@ public interface OrderService {
 
     /**
      * 更改订单状态
+     *
      * @param orderId
      * @return
      */
-    Boolean changeOrderStatus(Integer orderId,int changeStatusNum);
+    Boolean changeOrderStatus(Integer orderId, int changeStatusNum);
     /** ——-——————————-————--婚戒线————-----——*/
 
 }

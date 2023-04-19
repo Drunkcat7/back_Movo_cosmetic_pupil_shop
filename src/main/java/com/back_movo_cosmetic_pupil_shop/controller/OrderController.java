@@ -49,44 +49,57 @@ public class OrderController {
         return this.orderService.submit(order, appOrder.getOrderDetails());
     }
 
+    /**
+     * 查询该所有订单
+     *
+     * @return
+     */
     @GetMapping("/admin/queryOrder")
-    public Map<String,Object> queryOrderManageAll(@CurrentUser CurrentUserInfo user){
-        List<OrderItem> orderItemList = this.orderService.queryOrderManageAll();
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put("adminName",user.getUser());
-        map.put("orderItemList",orderItemList);
-        return map;
+    public List<Map<String, Object>> queryOrderManageAll() {
+        return this.orderService.queryOrderManageAll(null);
     }
 
+    /**
+     * 查询该用户所有订单
+     *
+     * @return
+     */
+    @GetMapping("/user/queryOrder")
+    public List<Map<String, Object>> userQueryOrder(@CurrentUser CurrentUserInfo user) {
+        return this.orderService.queryOrderManageAll(user.getUid());
+    }
 
     /**
      * 待发货
+     *
      * @param orderId
      * @return
      */
     @GetMapping("/user/deliverGoods")
-    public Boolean deliverGoods(Integer orderId){
-        return this.orderService.changeOrderStatus(orderId,1);
+    public Boolean deliverGoods(Integer orderId) {
+        return this.orderService.changeOrderStatus(orderId, 1);
     }
 
     /**
      * 待评价
+     *
      * @param orderId
      * @return
      */
     @GetMapping("/user/evaluate")
-    public Boolean evaluate(Integer orderId){
-        return this.orderService.changeOrderStatus(orderId,3);
+    public Boolean evaluate(Integer orderId) {
+        return this.orderService.changeOrderStatus(orderId, 3);
     }
 
     /**
      * 待收货
+     *
      * @param orderId
      * @return
      */
     @GetMapping("/admin/receiving")
-    public Boolean receiving(Integer orderId){
-        return this.orderService.changeOrderStatus(orderId,2);
+    public Boolean receiving(Integer orderId) {
+        return this.orderService.changeOrderStatus(orderId, 2);
     }
 
 }

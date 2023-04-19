@@ -30,7 +30,19 @@ public interface OrderDao {
      */
     int insert(Order order);
 
+    /**
+     * 查询最新的用户订单
+     * @param uid
+     * @return
+     */
     Integer queryLastOrderByUid(@Param("uid") Integer uid);
+
+    /**
+     * 查询所有订单id
+     * @param uid
+     * @return
+     */
+    List<Integer> queryOrderIdByUid(@Param("uid") Integer uid);
 
 
     /**

@@ -53,16 +53,25 @@
           AND order.uid = address.uid
           AND order.address_id = address.address_id
           AND order_detail.good_id = goods.good_id
+          AND order_detail.g_type_id = good_types.g_type_id
           AND goods.good_id = good_types.good_id
           AND order_detail.g_type_id = good_types.g_type_id
     </select>
-
+    <!--查询用户所属的订单-->
+    <select id="queryOrderIdByUid" resultType="java.lang.Integer">
+        SELECT * FROM `order`
+        <where>
+            <if test="uid != null">
+                and uid = #{uid}
+            </if>
+        </where>
+    </select>
     <!--新增所有列-->
     <insert id="insert" keyProperty="orderId" useGeneratedKeys="true">
         insert into `order`(uid, product_status, price_sum, address_id)
         values (#{uid}, #{productStatus}, #{priceSum}, #{addressId})
     </insert>
-
+    <!--查询最新的订单-->
     <select id="queryLastOrderByUid" resultType="java.lang.Integer">
         SELECT order_id
         FROM `order`

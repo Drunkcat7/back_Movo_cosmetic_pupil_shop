@@ -12,9 +12,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * (Order)表服务实现类
@@ -30,8 +29,21 @@ public class OrderServiceImpl implements OrderService {
     private OrderDetailDao orderDetailDao;
 
     @Override
-    public List<OrderItem> queryOrderManageAll() {
-        return this.orderDao.queryOrderManageAll();
+    public List<Map<String, Object>> queryOrderManageAll(Integer uid) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        List<Integer> orderIds = this.orderDao.queryOrderIdByUid(uid);
+        List<OrderItem> orderItems = this.orderDao.queryOrderManageAll();
+        for (Integer orderId : orderIds) {
+            Map<String, Object> mapOrder = new HashMap<>();
+            System.out.println(orderId);
+            List<OrderItem> collect = orderItems.stream()
+                    .filter(order -> Objects.equals(order.getOrderId(), orderId))
+                    .collect(Collectors.toList());
+            mapOrder.put("oderId", orderId);
+            mapOrder.put("orderItem", collect);
+            list.add(mapOrder);
+        }
+        return list;
     }
 
     /** -------------分界线------------- */
@@ -70,12 +82,13 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * 更改订单状态
+     *
      * @param orderId
      * @return
      */
     @Override
-    public Boolean changeOrderStatus(Integer orderId,int changeStatusNum) {
-        if (changeStatusNum-1 != this.orderDao.queryOrderStatusById(orderId)){
+    public Boolean changeOrderStatus(Integer orderId, int changeStatusNum) {
+        if (changeStatusNum - 1 != this.orderDao.queryOrderStatusById(orderId)) {
             return false;
         }
         Order order = new Order();
