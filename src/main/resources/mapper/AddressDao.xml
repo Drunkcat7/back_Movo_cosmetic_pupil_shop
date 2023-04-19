@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.back_movo_cosmetic_pupil_shop.dao.AddressDao">
+
+    <resultMap type="com.back_movo_cosmetic_pupil_shop.entity.Address" id="AddressMap">
+        <result property="addressId" column="address_id" jdbcType="INTEGER"/>
+        <result property="consignee" column="consignee" jdbcType="VARCHAR"/>
+        <result property="tel" column="tel" jdbcType="VARCHAR"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="detailedAddress" column="detailed_address" jdbcType="VARCHAR"/>
+        <result property="defaultContact" column="default_contact" jdbcType="INTEGER"/>
+        <result property="uid" column="uid" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--通过uid查询-->
+    <select id="queryByUid" resultMap="AddressMap">
+        select address_id,
+               consignee,
+               tel,
+               address,
+               detailed_address,
+               default_contact,
+               uid
+        from movo_database.address
+        where uid = #{uid}
+    </select>
+
+    <!--通过 uid 和 address_id 修改数据-->
+    <update id="updateByUidAndAddressId">
+        update movo_database.address
+        <set>
+            <if test="consignee != null and consignee != ''">
+                consignee = #{consignee},
+            </if>
+            <if test="tel != null and tel != ''">
+                tel = #{tel},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="detailedAddress != null and detailedAddress != ''">
+                detailed_address = #{detailedAddress},
+            </if>
+        </set>
+        where address_id = #{addressId} and uid = #{uid}
+    </update>
+
+    <!--通过 uid 和 address_id 删除-->
+    <delete id="deleteByUidAndAddressId">
+        delete
+        from movo_database.address
+        where address_id = #{addressId} and uid = #{uid}
+    </delete>
+
+
+    <!--通过 uid defaultContact(默认地址值)全部改为0-->
+    <update id="updateDefaultContact0ByUid">
+        update movo_database.address
+        set default_contact = 0
+        where uid = #{uid}
+    </update>
+
+    <!--通过 uid 和 address_id  defaultContact(默认地址值)改为1-->
+    <update id="updateDefaultContact1ByUidAndAddressId">
+        update movo_database.address
+        set default_contact = 1
+        where  address_id = #{addressId} and uid = #{uid}
+    </update>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="addressId" useGeneratedKeys="true">
+        insert into movo_database.address(consignee, tel, address, detailed_address, default_contact, uid)
+        values (#{consignee}, #{tel}, #{address}, #{detailedAddress}, #{defaultContact}, #{uid})
+    </insert>
+
+
+
+    <!--通过uid查询-->
+    <select id="queryByUidAndDefaultContact" resultMap="AddressMap">
+        select address_id,
+               consignee,
+               tel,
+               address,
+               detailed_address,
+               default_contact,
+               uid
+        from movo_database.address
+        where uid = #{uid} and default_contact = 1
+    </select>
+
+    <!-- ～～～～～～～～～～～ -->
+    <!--查询单个-->
+    <select id="queryById" resultMap="AddressMap">
+        select address_id,
+               consignee,
+               tel,
+               address,
+               detailed_address,
+               default_contact,
+               uid
+        from movo_database.address
+        where address_id = #{addressId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="AddressMap">
+        select address_id,
+               consignee,
+               tel,
+               address,
+               detailed_address,
+               default_contact,
+               uid
+        from movo_database.address limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="AddressMap">
+        select
+        address_id, consignee, tel, address, detailed_address, default_contact, uid
+        from movo_database.address
+        <where>
+            <if test="addressId != null">
+                and address_id = #{addressId}
+            </if>
+            <if test="consignee != null and consignee != ''">
+                and consignee = #{consignee}
+            </if>
+            <if test="tel != null and tel != ''">
+                and tel = #{tel}
+            </if>
+            <if test="address != null and address != ''">
+                and address = #{address}
+            </if>
+            <if test="detailedAddress != null and detailedAddress != ''">
+                and detailed_address = #{detailedAddress}
+            </if>
+            <if test="defaultContact != null">
+                and default_contact = #{defaultContact}
+            </if>
+            <if test="uid != null">
+                and uid = #{uid}
+            </if>
+        </where>
+    </select>
+
+
+
+    <insert id="insertBatch" keyProperty="addressId" useGeneratedKeys="true">
+        insert into movo_database.address(consignee, tel, address, detailed_address, default_contact, uid)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.consignee}, #{entity.tel}, #{entity.address}, #{entity.detailedAddress}, #{entity.defaultContact},
+            #{entity.uid})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="addressId" useGeneratedKeys="true">
+        insert into movo_database.address(consignee, tel, address, detailed_address, default_contact, uid)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.consignee}, #{entity.tel}, #{entity.address}, #{entity.detailedAddress}, #{entity.defaultContact},
+            #{entity.uid})
+        </foreach>
+        on duplicate key update
+        consignee = values(consignee) , tel = values(tel) , address = values(address) , detailed_address =
+        values(detailed_address) , default_contact = values(default_contact) , uid = values(uid)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update movo_database.address
+        <set>
+            <if test="consignee != null and consignee != ''">
+                consignee = #{consignee},
+            </if>
+            <if test="tel != null and tel != ''">
+                tel = #{tel},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="detailedAddress != null and detailedAddress != ''">
+                detailed_address = #{detailedAddress},
+            </if>
+            <if test="defaultContact != null">
+                default_contact = #{defaultContact},
+            </if>
+            <if test="uid != null">
+                uid = #{uid},
+            </if>
+        </set>
+        where address_id = #{addressId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from movo_database.address
+        where address_id = #{addressId}
+    </delete>
+
+</mapper>
+
