@@ -2,6 +2,7 @@ package com.back_movo_cosmetic_pupil_shop.controller;
 
 import com.back_movo_cosmetic_pupil_shop.entity.Order;
 import com.back_movo_cosmetic_pupil_shop.entity.OrderDetail;
+import com.back_movo_cosmetic_pupil_shop.entity.OrderItem;
 import com.back_movo_cosmetic_pupil_shop.my_interceptor.CurrentUser;
 import com.back_movo_cosmetic_pupil_shop.my_interceptor.CurrentUserInfo;
 import com.back_movo_cosmetic_pupil_shop.service.OrderService;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,6 +60,15 @@ public class OrderController {
          *
          * */
         return null;
+    }
+
+    @GetMapping("/admin/queryOrder")
+    public Map<String,Object> queryOrderManageAll(@CurrentUser CurrentUserInfo user){
+        List<OrderItem> orderItemList = this.orderService.queryOrderManageAll();
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("adminName",user.getUser());
+        map.put("orderItemList",orderItemList);
+        return map;
     }
 }
 

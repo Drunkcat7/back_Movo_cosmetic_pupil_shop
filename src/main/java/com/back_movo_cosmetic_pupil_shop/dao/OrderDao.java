@@ -1,6 +1,7 @@
 package com.back_movo_cosmetic_pupil_shop.dao;
 
 import com.back_movo_cosmetic_pupil_shop.entity.Order;
+import com.back_movo_cosmetic_pupil_shop.entity.OrderItem;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Pageable;
 
@@ -13,6 +14,14 @@ import java.util.List;
  * @since 2023-04-19 10:40:05
  */
 public interface OrderDao {
+
+    /**
+     * 查询 订单管理 数据
+     * @return 对象列表
+     */
+    List<OrderItem> queryOrderManageAll();
+
+    /** ——----——-——————--分界线--——————----——————-——————-----—— */
 
     /**
      * 通过ID查询单条数据

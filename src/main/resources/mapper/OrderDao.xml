@@ -9,7 +9,54 @@
         <result property="priceSum" column="price_sum" jdbcType="NUMERIC"/>
         <result property="addressId" column="address_id" jdbcType="INTEGER"/>
     </resultMap>
+    <resultMap type="com.back_movo_cosmetic_pupil_shop.entity.OrderItem" id="OrderItem">
+        <result property="orderId" column="order_id" jdbcType="INTEGER"/>
+        <result property="img" column="img" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="addressId" column="address_id" jdbcType="INTEGER"/>
+        <result property="consignee" column="consignee" jdbcType="VARCHAR"/>
+        <result property="tel" column="tel" jdbcType="VARCHAR"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="detailedAddress" column="detailed_address" jdbcType="VARCHAR"/>
+        <result property="defaultContact" column="default_contact" jdbcType="INTEGER"/>
+        <result property="uid" column="uid" jdbcType="INTEGER"/>
+        <result property="gname" column="gname" jdbcType="VARCHAR"/>
+        <result property="num" column="num" jdbcType="INTEGER"/>
+        <result property="price" column="price" jdbcType="NUMERIC"/>
+        <result property="productStatus" column="product_status" jdbcType="INTEGER"/>
+        <result property="priceSum" column="price_sum" jdbcType="NUMERIC"/>
+    </resultMap>
 
+    <!--查询 订单管理 数据-->
+    <select id="queryOrderManageAll" resultMap="OrderItem">
+        SELECT order.order_id,
+               good_types.img,
+               good_types.name,
+               address.address_id,
+               address.consignee,
+               address.tel,
+               address.address,
+               address.detailed_address,
+               address.default_contact,
+               address.uid,
+               goods.gname,
+               order_detail.num,
+               goods.price,
+               order.product_status,
+               order.price_sum
+        FROM `order`,
+             order_detail,
+             goods,
+             good_types,
+             address
+        WHERE order.order_id = order_detail.order_id
+          AND order.uid = address.uid
+          AND order.address_id = address.address_id
+          AND order_detail.good_id = goods.good_id
+          AND goods.good_id = good_types.good_id
+    </select>
+
+<!--    ～～～～～～～～～～～～婚戒线～～～～～～～～～～～～～～～～～～～～～～-->
     <!--查询单个-->
     <select id="queryById" resultMap="OrderMap">
         select order_id,
