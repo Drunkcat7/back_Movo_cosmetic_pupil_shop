@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * (Goods)表服务接口
@@ -34,6 +35,13 @@ public interface GoodsService {
      * @return 对象列表
      */
     List<Goods> queryAllGoods();
+
+    /**
+     * 查询商品的详细信息
+     * @param goodId
+     * @return
+     */
+    Map queryGoodInfo(Integer goodId);
 
     /**
      * 通过主键删除数据

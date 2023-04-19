@@ -88,18 +88,14 @@ public class GoodsController {
 
 
     /**
-     * 查询单条商品
+     * 查询商品详细信息
      *
      * @param goodId 商品id
      * @return 商品实体
      */
     @GetMapping("/admin/goodInfo")
     public Map queryById(Integer goodId) {
-        Goods goods = this.goodsService.queryById(goodId);
-        Map map = JSON.parseObject(JSON.toJSONString(goods), Map.class);
-        map.put("shufflingFigure", JSONArray.parseArray(goods.getShufflingFigure()));
-        map.put("detailsFigure", JSONArray.parseArray(goods.getDetailsFigure()));
-        return map;
+        return this.goodsService.queryGoodInfo(goodId);
     }
 
     /**

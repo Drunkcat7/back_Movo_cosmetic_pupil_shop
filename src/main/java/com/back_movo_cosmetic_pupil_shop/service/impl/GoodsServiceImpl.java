@@ -1,15 +1,17 @@
 package com.back_movo_cosmetic_pupil_shop.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.back_movo_cosmetic_pupil_shop.dao.GoodTypesDao;
+import com.back_movo_cosmetic_pupil_shop.entity.GoodTypes;
 import com.back_movo_cosmetic_pupil_shop.entity.Goods;
 import com.back_movo_cosmetic_pupil_shop.dao.GoodsDao;
 import com.back_movo_cosmetic_pupil_shop.service.GoodsService;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * (Goods)表服务实现类
@@ -21,7 +23,8 @@ import java.util.List;
 public class GoodsServiceImpl implements GoodsService {
     @Resource
     private GoodsDao goodsDao;
-
+    @Resource
+    private GoodTypesDao goodTypesDao;
     /**
      * 通过ID查询单条数据
      *
@@ -51,6 +54,19 @@ public class GoodsServiceImpl implements GoodsService {
     public List<Goods> queryAllGoods() {
         return this.goodsDao.queryAllGoods();
     }
+
+    @Override
+    public Map queryGoodInfo(Integer goodId) {
+        Goods goods = this.goodsDao.queryById(goodId);
+        Map map = JSON.parseObject(JSON.toJSONString(goods), Map.class);
+        map.put("shufflingFigure", JSONArray.parseArray(goods.getShufflingFigure()));
+        map.put("detailsFigure", JSONArray.parseArray(goods.getDetailsFigure()));
+        //查询对应的商品信息
+        List<GoodTypes> goodTypes = this.goodTypesDao.queryGoodItems(goodId);
+        map.put("goodTypes", goodTypes);
+        return map;
+    }
+
 
     /**
      * 通过主键删除数据
