@@ -1,5 +1,6 @@
 package com.back_movo_cosmetic_pupil_shop.controller;
 
+import com.back_movo_cosmetic_pupil_shop.entity.CartItem;
 import com.back_movo_cosmetic_pupil_shop.entity.ShoppingCart;
 import com.back_movo_cosmetic_pupil_shop.my_interceptor.CurrentUser;
 import com.back_movo_cosmetic_pupil_shop.my_interceptor.CurrentUserInfo;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,13 +41,6 @@ public class ShoppingCartController {
         return ResponseEntity.ok(this.shoppingCartService.queryById(id));
     }
 
-    /*
-    *     <insert id="insert" keyProperty="cartId" useGeneratedKeys="true">
-        insert into shopping_cart(g_type_id, num, uid)
-        values (#{gTypeId}, #{num}, #{uid})
-    </insert>
-    *
-    * */
     @PostMapping("/user/addGood")
     public Map<String, Object> addCartItem(ShoppingCart shoppingCart, @CurrentUser CurrentUserInfo user) {
         Map<String, Object> map = new HashMap<>();
@@ -61,5 +56,58 @@ public class ShoppingCartController {
         return map;
     }
 
+    /**
+     * 查询用户所属的购物车
+     *
+     * @param user token解析的用户信息
+     * @return 购物车list
+     */
+    @GetMapping("/user/myShoppingCart")
+    public List<CartItem> myShoppingCart(@CurrentUser CurrentUserInfo user) {
+        return this.shoppingCartService.queryByUidAll(user.getUid());
+    }
+
+    /**
+     * 修改商品数量
+     *
+     * @param cartId   主键
+     * @param num      数量
+     * @param userInfo token解析的用户信息
+     * @return 信息
+     */
+    @GetMapping("/user/updateGoodNum")
+    public Map<String, Object> updateGoodNum(Integer cartId, Integer num, @CurrentUser CurrentUserInfo userInfo) {
+        Map<String, Object> map = new HashMap<>();
+        Boolean isUpdate = this.shoppingCartService.updateCartNum(cartId, num, userInfo.getUid());
+        if (isUpdate) {
+            map.put("status", 200);
+            map.put("msg", "修改成功");
+        } else {
+            map.put("status", 500);
+            map.put("msg", "修改失败");
+        }
+        return map;
+    }
+
+    /**
+     * 通过主键删除商品
+     *
+     * @param cartId   主键
+     * @param userInfo token解析的用户信息
+     * @return 信息
+     */
+    @GetMapping("/user/delGood")
+    public Map<String, Object> delGood(Integer cartId, @CurrentUser CurrentUserInfo userInfo) {
+        Map<String, Object> map = new HashMap<>();
+        Boolean isUpdate = this.shoppingCartService.delGood(cartId, userInfo.getUid());
+        if (isUpdate) {
+            map.put("status", 200);
+            map.put("msg", "删除成功");
+        } else {
+            map.put("status", 500);
+            map.put("msg", "删除失败");
+        }
+        return map;
+    }
 }
 

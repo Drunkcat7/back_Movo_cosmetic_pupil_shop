@@ -9,12 +9,52 @@
         <result property="num" column="num" jdbcType="INTEGER"/>
         <result property="uid" column="uid" jdbcType="INTEGER"/>
     </resultMap>
+    <resultMap type="com.back_movo_cosmetic_pupil_shop.entity.CartItem" id="ShoppingCartItem">
+        <result property="cartId" column="cart_id" jdbcType="INTEGER"/>
+        <result property="goodId" column="good_id" jdbcType="INTEGER"/>
+        <result property="gTypeId" column="g_type_id" jdbcType="INTEGER"/>
+        <result property="num" column="num" jdbcType="INTEGER"/>
+        <result property="uid" column="uid" jdbcType="INTEGER"/>
+        <result property="gname" column="gname" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="NUMERIC"/>
+        <result property="mainImg" column="main_img" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="img" column="img" jdbcType="VARCHAR"/>
+    </resultMap>
     <!--新增所有列-->
     <insert id="insert" keyProperty="cartId" useGeneratedKeys="true">
         insert into shopping_cart(good_id, g_type_id, num, uid)
         values (#{goodId}, #{gTypeId}, #{num}, #{uid})
     </insert>
 
+    <!--通过uid查询该用户的所有商品-->
+    <select id="queryByUidAll" resultMap="ShoppingCartItem">
+        SELECT cart_id,
+               cart.good_id,
+               cart.g_type_id,
+               type.name,
+               num,
+               img,
+               gname,
+               price,
+               main_img
+        FROM shopping_cart AS cart,
+             goods AS g,
+             good_types AS type
+        WHERE cart.good_id = g.good_id
+          AND cart.g_type_id = type.g_type_id
+          AND  cart.uid = #{uid}
+    </select>
+    <!--通过主键修改商品数量-->
+    <update id="updateCartNum">
+        update shopping_cart
+        <set>
+            <if test="num != null">
+                num = #{num},
+            </if>
+        </set>
+        where cart_id = #{cartId} and uid = #{uid}
+    </update>
 
     <!--===============================================================分界线===============================================================-->
     <!--查询单个-->
