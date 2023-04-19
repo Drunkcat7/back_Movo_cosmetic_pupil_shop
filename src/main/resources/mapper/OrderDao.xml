@@ -54,6 +54,7 @@
           AND order.address_id = address.address_id
           AND order_detail.good_id = goods.good_id
           AND goods.good_id = good_types.good_id
+          AND order_detail.g_type_id = good_types.g_type_id
     </select>
     <!--新增所有列-->
     <insert id="insert" keyProperty="orderId" useGeneratedKeys="true">
