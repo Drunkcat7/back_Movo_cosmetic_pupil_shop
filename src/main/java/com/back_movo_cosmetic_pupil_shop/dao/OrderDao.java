@@ -32,6 +32,24 @@ public interface OrderDao {
 
     Integer queryLastOrderByUid(@Param("uid") Integer uid);
 
+
+    /**
+     * 更新订单状态
+     * @param order
+     * @return
+     */
+    int updateOrderStatusById(Order order);
+
+    /**
+     * 更新订单状态
+     * @param orderId
+     * @return
+     */
+    Integer queryOrderStatusById(Integer orderId);
+
+
+
+
     /** ——----——-——————--分界线--——————----——————-——————-----—— */
 
     /**

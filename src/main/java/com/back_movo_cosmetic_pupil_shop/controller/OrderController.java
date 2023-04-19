@@ -57,5 +57,37 @@ public class OrderController {
         map.put("orderItemList",orderItemList);
         return map;
     }
+
+
+    /**
+     * 待发货
+     * @param orderId
+     * @return
+     */
+    @GetMapping("/user/deliverGoods")
+    public Boolean deliverGoods(Integer orderId){
+        return this.orderService.changeOrderStatus(orderId,1);
+    }
+
+    /**
+     * 待评价
+     * @param orderId
+     * @return
+     */
+    @GetMapping("/user/evaluate")
+    public Boolean evaluate(Integer orderId){
+        return this.orderService.changeOrderStatus(orderId,3);
+    }
+
+    /**
+     * 待收货
+     * @param orderId
+     * @return
+     */
+    @GetMapping("/admin/receiving")
+    public Boolean receiving(Integer orderId){
+        return this.orderService.changeOrderStatus(orderId,2);
+    }
+
 }
 

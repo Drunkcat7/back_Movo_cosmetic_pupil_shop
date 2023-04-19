@@ -33,6 +33,13 @@ public interface OrderService {
      */
     Map<String, Object> submit(Order order, List<OrderDetail> orderDetails);
 
+
+    /**
+     * 更改订单状态
+     * @param orderId
+     * @return
+     */
+    Boolean changeOrderStatus(Integer orderId,int changeStatusNum);
     /** ——-——————————-————--婚戒线————-----——*/
 
 }

@@ -67,4 +67,21 @@ public class OrderServiceImpl implements OrderService {
         }
         return map;
     }
+
+    /**
+     * 更改订单状态
+     * @param orderId
+     * @return
+     */
+    @Override
+    public Boolean changeOrderStatus(Integer orderId,int changeStatusNum) {
+        if (changeStatusNum-1 != this.orderDao.queryOrderStatusById(orderId)){
+            return false;
+        }
+        Order order = new Order();
+        order.setOrderId(orderId);
+        order.setProductStatus(changeStatusNum);
+        this.orderDao.updateOrderStatusById(order);
+        return true;
+    }
 }
