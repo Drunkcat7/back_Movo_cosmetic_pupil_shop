@@ -2,16 +2,19 @@ package com.back_movo_cosmetic_pupil_shop.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.back_movo_cosmetic_pupil_shop.entity.AppGoodFrom;
 import com.back_movo_cosmetic_pupil_shop.entity.Goods;
+import com.back_movo_cosmetic_pupil_shop.entity.GoodsImgFiles;
 import com.back_movo_cosmetic_pupil_shop.service.GoodsService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cglib.beans.BeanMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * (Goods)表控制层
@@ -61,12 +64,13 @@ public class GoodsController {
 
     /**
      * 分类页-根据class_id(类别id) 查询
+     *
      * @return 对象列表
      */
     @GetMapping("/TypeGoods")
-    public List<Map<String,Object>> queryByClassId(Integer classId){
+    public List<Map<String, Object>> queryByClassId(Integer classId) {
 //        最后过滤完要返回的list
-        List<Map<String,Object>> goodsHomeList = new ArrayList<Map<String,Object>>();
+        List<Map<String, Object>> goodsHomeList = new ArrayList<Map<String, Object>>();
 //        查询goods全表的list
         List<Goods> goodsList = goodsService.queryByClassId(classId);
         return getGoodsMaps(goodsHomeList, goodsList);
@@ -93,7 +97,7 @@ public class GoodsController {
      * @param goodId 商品id
      * @return 商品实体
      */
-    @GetMapping({"/goodInfo","/admin/goodInfo"})
+    @GetMapping({"/goodInfo", "/admin/goodInfo"})
     public Map queryById(Integer goodId) {
         return this.goodsService.queryGoodInfo(goodId);
     }
@@ -118,13 +122,57 @@ public class GoodsController {
         return map;
     }
 
-    /**
+
+
+    /*
      * 添加商品
-     * 实体类合集,Good,==>给Good表和gTypeId表添加数据,参照提交订单接口
-     *
-     */
+     * 1.调用上传图片接口==>返回图片名称等数据（imgData）
+     * 2.携带imgData和其他信息调用addGoods接口
+     * */
+
     /**
-     * 新增
-     * 上传文件,
+     * 添加商品数据
+     *
+     * @param appGoodFrom
+     * @return
      */
+    @PostMapping("/admin/addGoodsData")
+    public Map<String, Object> addGoods(@RequestBody AppGoodFrom appGoodFrom) {
+        Boolean isInsert = this.goodsService.addGoofData(appGoodFrom);
+        Map<String, Object> map = new HashMap<>();
+        if (isInsert) {
+            map.put("status", 200);
+            map.put("msg", "添加成功");
+        } else {
+            map.put("status", 500);
+            map.put("msg", "添加失败");
+        }
+        return map;
+    }
+
+    /*
+     * 更改商品信息
+     * 1.调用上传图片接口==>返回图片名称等数据（imgData）
+     * 2.携带imgData和其他信息调用更改其他商品接口
+     * */
+    @PostMapping("/admin/updateGoodsData")
+    public Map updateGoodsData(@RequestBody AppGoodFrom appGoodFrom) {
+        Boolean isInsert = this.goodsService.updateGoodsData(appGoodFrom);
+        if (!isInsert) return null;
+        return this.goodsService.queryGoodInfo(appGoodFrom.getGoods().getGoodId());
+    }
+
+
+    /**
+     * 上传图片文件
+     *
+     * @param goodsImgFiles
+     * @return
+     */
+    @PostMapping("/admin/uploadGoodsImages")
+    public Map<String, Object> uploadFile(GoodsImgFiles goodsImgFiles) {
+        return this.goodsService.uploadFile(goodsImgFiles);
+    }
+
+
 }

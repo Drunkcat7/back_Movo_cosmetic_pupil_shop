@@ -20,5 +20,24 @@ public interface GoodTypesDao {
      * @return GoodTypes实体类
      */
     List<GoodTypes> queryGoodItems(@Param("goodId") Integer goodId);
+
+
+    /**
+     * 添加商品
+     *
+     * @param goodTypes
+     * @return
+     */
+    int insert(GoodTypes goodTypes);
+
+    /**
+     * 删除商品的所有商品种类
+     *
+     * @param goodId
+     * @return
+     */
+    int deleteByIdGoodId(@Param("goodId") Integer goodId);
+
+
 }
 

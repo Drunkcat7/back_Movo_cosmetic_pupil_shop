@@ -1,6 +1,8 @@
 package com.back_movo_cosmetic_pupil_shop.service;
 
+import com.back_movo_cosmetic_pupil_shop.entity.AppGoodFrom;
 import com.back_movo_cosmetic_pupil_shop.entity.Goods;
+import com.back_movo_cosmetic_pupil_shop.entity.GoodsImgFiles;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -25,6 +27,7 @@ public interface GoodsService {
 
     /**
      * 分类页-根据class_id(类别id) 查询
+     *
      * @return 对象列表
      */
     List<Goods> queryByClassId(Integer classId);
@@ -32,12 +35,14 @@ public interface GoodsService {
 
     /**
      * 首页-查询商品表全部数据
+     *
      * @return 对象列表
      */
     List<Goods> queryAllGoods();
 
     /**
      * 查询商品的详细信息
+     *
      * @param goodId
      * @return
      */
@@ -51,4 +56,27 @@ public interface GoodsService {
      */
     Boolean deleteById(Integer goodId);
 
+    /**
+     * 添加商品的数据
+     *
+     * @param appGoodFrom
+     * @return
+     */
+    Boolean addGoofData(AppGoodFrom appGoodFrom);
+
+
+    /**
+     * 修改商品信息
+     *
+     * @param appGoodFrom
+     * @return
+     */
+    Boolean updateGoodsData(AppGoodFrom appGoodFrom);
+    /**
+     * 上传商品图片
+     *
+     * @param goodsImgFiles
+     * @return
+     */
+    Map<String, Object> uploadFile(GoodsImgFiles goodsImgFiles);
 }

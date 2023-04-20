@@ -18,5 +18,17 @@
         from good_types
         where good_id = #{goodId}
     </select>
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="gTypeId" useGeneratedKeys="true">
+        insert into good_types(name, img, good_id)
+        values (#{name}, #{img}, #{goodId})
+    </insert>
+
+    <!--删除商品的所有商品种类-->
+    <delete id="deleteByIdGoodId">
+        delete
+        from good_types
+        where good_id = #{goodId}
+    </delete>
 </mapper>
 

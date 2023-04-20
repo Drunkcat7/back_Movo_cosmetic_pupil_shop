@@ -1,13 +1,16 @@
 package com.back_movo_cosmetic_pupil_shop.my_interceptor;
 
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.unit.DataSize;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
+import javax.servlet.MultipartConfigElement;
 import java.util.List;
 
 /**
@@ -47,5 +50,15 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .allowedMethods("POST", "GET","PUT")
                 .allowedOrigins("*");
+    }
+    //上传文件大小限制
+    @Bean
+    public MultipartConfigElement multipartConfigElement(){
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+        // 单个文件大小
+        factory.setMaxFileSize(DataSize.parse("10240MB"));
+        // 上传的总文件大小
+        factory.setMaxRequestSize(DataSize.parse("20480MB"));
+        return factory.createMultipartConfig();
     }
 }

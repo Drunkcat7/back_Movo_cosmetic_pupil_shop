@@ -10,3 +10,7 @@ spring:
 mybatis:
   mapper-locations: classpath:/mapper/*Dao.xml
   typeAliasesPackage: com.example.shopping.entity
+
+# 文件上传
+file:
+  uploadFilePath: D:/CODE/TopOrder/vue_Movo_cosmetic_pupil_shop/public/images/
