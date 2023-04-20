@@ -118,4 +118,13 @@ public class GoodsController {
         return map;
     }
 
+    /**
+     * 添加商品
+     * 实体类合集,Good,==>给Good表和gTypeId表添加数据,参照提交订单接口
+     *
+     */
+    /**
+     * 新增
+     * 上传文件,
+     */
 }
