@@ -26,6 +26,11 @@
         <result property="productStatus" column="product_status" jdbcType="INTEGER"/>
         <result property="priceSum" column="price_sum" jdbcType="NUMERIC"/>
     </resultMap>
+    <resultMap type="com.back_movo_cosmetic_pupil_shop.entity.UserOrder" id="UserOrderMap">
+        <result property="orderId" column="order_id" jdbcType="INTEGER"/>
+        <result property="uid" column="uid" jdbcType="INTEGER"/>
+        <result property="user" column="user" jdbcType="VARCHAR"/>
+    </resultMap>
 
     <!--查询 订单管理 数据-->
     <select id="queryOrderManageAll" resultMap="OrderItem">
@@ -58,12 +63,13 @@
           AND order_detail.g_type_id = good_types.g_type_id
     </select>
     <!--查询用户所属的订单-->
-    <select id="queryOrderIdByUid" resultType="java.lang.Integer">
-        SELECT * FROM `order`
+    <select id="queryOrderIdByUid" resultMap="UserOrderMap">
+        SELECT a.uid,a.user,order_id FROM `order`, account as a
         <where>
             <if test="uid != null">
-                and uid = #{uid}
+                and a.uid = #{uid}
             </if>
+            and a.uid = `order`.uid
         </where>
     </select>
     <!--新增所有列-->

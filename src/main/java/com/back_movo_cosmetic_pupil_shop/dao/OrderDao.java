@@ -1,7 +1,9 @@
 package com.back_movo_cosmetic_pupil_shop.dao;
 
+import com.back_movo_cosmetic_pupil_shop.entity.Account;
 import com.back_movo_cosmetic_pupil_shop.entity.Order;
 import com.back_movo_cosmetic_pupil_shop.entity.OrderItem;
+import com.back_movo_cosmetic_pupil_shop.entity.UserOrder;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Pageable;
 
@@ -42,7 +44,7 @@ public interface OrderDao {
      * @param uid
      * @return
      */
-    List<Integer> queryOrderIdByUid(@Param("uid") Integer uid);
+    List<UserOrder> queryOrderIdByUid(@Param("uid") Integer uid);
 
 
     /**

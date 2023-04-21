@@ -5,6 +5,7 @@ import com.back_movo_cosmetic_pupil_shop.entity.Order;
 import com.back_movo_cosmetic_pupil_shop.dao.OrderDao;
 import com.back_movo_cosmetic_pupil_shop.entity.OrderDetail;
 import com.back_movo_cosmetic_pupil_shop.entity.OrderItem;
+import com.back_movo_cosmetic_pupil_shop.entity.UserOrder;
 import com.back_movo_cosmetic_pupil_shop.service.OrderService;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
@@ -31,15 +32,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Map<String, Object>> queryOrderManageAll(Integer uid) {
         List<Map<String, Object>> list = new ArrayList<>();
-        List<Integer> orderIds = this.orderDao.queryOrderIdByUid(uid);
+        List<UserOrder> userOrders = this.orderDao.queryOrderIdByUid(uid);
         List<OrderItem> orderItems = this.orderDao.queryOrderManageAll();
-        for (Integer orderId : orderIds) {
+        for (UserOrder userOrder : userOrders) {
             Map<String, Object> mapOrder = new HashMap<>();
-            System.out.println(orderId);
             List<OrderItem> collect = orderItems.stream()
-                    .filter(order -> Objects.equals(order.getOrderId(), orderId))
+                    .filter(order -> Objects.equals(order.getOrderId(), userOrder.getOrderId()))
                     .collect(Collectors.toList());
-            mapOrder.put("oderId", orderId);
+            mapOrder.put("oderId", userOrder.getOrderId());
+            mapOrder.put("uid", userOrder.getUid());
+            mapOrder.put("user", userOrder.getUser());
             mapOrder.put("orderItem", collect);
             list.add(mapOrder);
         }
