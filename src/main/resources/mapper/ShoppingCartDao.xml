@@ -24,8 +24,24 @@
     <!--新增所有列-->
     <insert id="insert" keyProperty="cartId" useGeneratedKeys="true">
         insert into shopping_cart(good_id, g_type_id, num, uid)
-        values (#{goodId}, #{gTypeId}, #{num}, #{uid})
+        values (#{goodId}, #{gTypeId}, #{num}, #{uid});
     </insert>
+    <!--新增商品数量-->
+    <update id="addGoodsNum">
+        update shopping_cart
+        set num = num + #{num}
+        where cart_id = #{cartId}
+    </update>
+
+    <select id="queryIsGoods" resultMap="ShoppingCartMap">
+        select cart_id,
+               good_id,
+               g_type_id,
+               num,
+               uid
+        from shopping_cart
+        where good_id = #{goodId} and g_type_id = #{gTypeId}
+    </select>
 
     <!--通过uid查询该用户的所有商品-->
     <select id="queryByUidAll" resultMap="ShoppingCartItem">

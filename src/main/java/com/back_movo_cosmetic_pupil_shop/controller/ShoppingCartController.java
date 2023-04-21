@@ -43,17 +43,8 @@ public class ShoppingCartController {
 
     @PostMapping("/user/addGood")
     public Map<String, Object> addCartItem(ShoppingCart shoppingCart, @CurrentUser CurrentUserInfo user) {
-        Map<String, Object> map = new HashMap<>();
         shoppingCart.setUid(user.getUid());
-        Boolean isAdd = this.shoppingCartService.insert(shoppingCart);
-        if (isAdd) {
-            map.put("status", 200);
-            map.put("msg", "添加成功");
-        } else {
-            map.put("status", 500);
-            map.put("msg", "添加失败");
-        }
-        return map;
+        return this.shoppingCartService.addCart(shoppingCart);
     }
 
     /**

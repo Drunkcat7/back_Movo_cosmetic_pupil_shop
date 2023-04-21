@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * (ShoppingCart)表服务接口
@@ -22,7 +23,7 @@ public interface ShoppingCartService {
      * @param shoppingCart 实例对象
      * @return 影响行数
      */
-    Boolean insert(ShoppingCart shoppingCart);
+    Map<String,Object> addCart(ShoppingCart shoppingCart);
 
 
     /**

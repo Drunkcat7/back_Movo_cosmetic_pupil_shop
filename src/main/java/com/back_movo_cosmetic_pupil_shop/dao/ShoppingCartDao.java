@@ -24,6 +24,17 @@ public interface ShoppingCartDao {
     int insert(ShoppingCart shoppingCart);
 
     /**
+     * 添加商品数量
+     * @param shoppingCart
+     * @return
+     */
+    int addGoodsNum(ShoppingCart shoppingCart);
+
+
+    ShoppingCart queryIsGoods(@Param("goodId") Integer goodId,@Param("gTypeId") Integer gTypeId);
+
+
+    /**
      * 通过uid查询该用户所属的商品
      *
      * @param uid 用户id

@@ -10,7 +10,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * (ShoppingCart)表服务实现类
@@ -24,9 +26,25 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private ShoppingCartDao shoppingCartDao;
 
     @Override
-    public Boolean insert(ShoppingCart shoppingCart) {
-        int insert = this.shoppingCartDao.insert(shoppingCart);
-        return insert != 0;
+    public Map<String, Object> addCart(ShoppingCart shoppingCart) {
+        Map<String, Object> map = new HashMap<>();
+        //查询是否有数据
+        ShoppingCart item = this.shoppingCartDao.queryIsGoods(shoppingCart.getGoodId(), shoppingCart.getGTypeId());
+        int i;
+        if (item == null) {
+            i = this.shoppingCartDao.insert(shoppingCart);
+        } else {
+            shoppingCart.setCartId(item.getCartId());
+            i = this.shoppingCartDao.addGoodsNum(shoppingCart);
+        }
+        if (i != 0) {
+            map.put("status", 200);
+            map.put("msg", "添加成功");
+        } else {
+            map.put("status", 500);
+            map.put("msg", "添加失败");
+        }
+        return map;
     }
 
     /**
