@@ -40,7 +40,7 @@
                num,
                uid
         from shopping_cart
-        where good_id = #{goodId} and g_type_id = #{gTypeId}
+        where good_id = #{goodId} and g_type_id = #{gTypeId} and uid = #{uid}
     </select>
 
     <!--通过uid查询该用户的所有商品-->

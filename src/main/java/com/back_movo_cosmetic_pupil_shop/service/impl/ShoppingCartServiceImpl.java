@@ -29,7 +29,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public Map<String, Object> addCart(ShoppingCart shoppingCart) {
         Map<String, Object> map = new HashMap<>();
         //查询是否有数据
-        ShoppingCart item = this.shoppingCartDao.queryIsGoods(shoppingCart.getGoodId(), shoppingCart.getGTypeId());
+        ShoppingCart item = this.shoppingCartDao.queryIsGoods(shoppingCart.getGoodId(), shoppingCart.getGTypeId(),
+                shoppingCart.getUid());
+        System.out.println(shoppingCart.getUid());
+        System.out.println(shoppingCart.getCartId());
+        System.out.println(shoppingCart.getGTypeId());
+        System.out.println(shoppingCart.getGoodId());
         int i;
         if (item == null) {
             i = this.shoppingCartDao.insert(shoppingCart);

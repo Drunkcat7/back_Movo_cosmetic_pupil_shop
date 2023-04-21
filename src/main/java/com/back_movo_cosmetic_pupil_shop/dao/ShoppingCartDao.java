@@ -25,13 +25,14 @@ public interface ShoppingCartDao {
 
     /**
      * 添加商品数量
+     *
      * @param shoppingCart
      * @return
      */
     int addGoodsNum(ShoppingCart shoppingCart);
 
 
-    ShoppingCart queryIsGoods(@Param("goodId") Integer goodId,@Param("gTypeId") Integer gTypeId);
+    ShoppingCart queryIsGoods(@Param("goodId") Integer goodId, @Param("gTypeId") Integer gTypeId, @Param("uid") Integer uid);
 
 
     /**
