@@ -40,6 +40,7 @@ public class GoodsController {
     public Map<String, Object> queryById() {
         Map<String, Object> map = new HashMap<>();
         Goods goods = goodsService.queryById(1);
+        map.put("goodId", goods.getGoodId());
         map.put("topImg", goods.getTopImg());
         //String 转 JSON
         map.put("shufflingFigure", JSONArray.parseArray(goods.getShufflingFigure()));
