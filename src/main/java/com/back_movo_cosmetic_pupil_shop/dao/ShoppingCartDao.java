@@ -61,6 +61,8 @@ public interface ShoppingCartDao {
      * @return 影响行数
      */
     int deleteById(@Param("cartId") Integer cartId, @Param("uid") Integer uid);
+    
+    int deleteByIdGoodsItem(@Param("goodId") Integer goodId,@Param("gTypeId") Integer gTypeId, @Param("uid") Integer uid);
 
     /**~===============================================================分界线===============================================================**/
 

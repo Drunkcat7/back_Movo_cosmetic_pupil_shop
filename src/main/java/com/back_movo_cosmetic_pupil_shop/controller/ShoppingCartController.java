@@ -100,5 +100,11 @@ public class ShoppingCartController {
         }
         return map;
     }
+
+    //    传goodId和gTypeId删除
+    @GetMapping("/user/delGoodsByGoodsItem")
+    public Boolean delGoodsByGoodId(Integer goodId, Integer gTypeId, @CurrentUser CurrentUserInfo userInfo) {
+        return this.shoppingCartService.delGoodsByGoodId(goodId, gTypeId, userInfo.getUid());
+    }
 }
 

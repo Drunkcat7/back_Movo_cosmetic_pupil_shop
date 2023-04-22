@@ -173,5 +173,12 @@
         where cart_id = #{cartId}
     </delete>
 
+    <!--通过GoodsItem删除-->
+    <delete id="deleteByIdGoodsItem">
+        delete
+        from shopping_cart
+        where good_id = #{goodId} and g_type_id = #{gTypeId} and uid = #{uid}
+    </delete>
+
 </mapper>
 

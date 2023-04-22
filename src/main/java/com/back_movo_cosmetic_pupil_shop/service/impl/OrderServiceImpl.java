@@ -42,6 +42,11 @@ public class OrderServiceImpl implements OrderService {
             mapOrder.put("oderId", userOrder.getOrderId());
             mapOrder.put("uid", userOrder.getUid());
             mapOrder.put("user", userOrder.getUser());
+            try {
+                mapOrder.put("productStatus", collect.get(0).getProductStatus());
+            } catch (Exception e) {
+                mapOrder.put("productStatus", null);
+            }
             mapOrder.put("orderItem", collect);
             list.add(mapOrder);
         }
@@ -72,6 +77,7 @@ public class OrderServiceImpl implements OrderService {
                 this.orderDetailDao.insert(orderDetail);
             }
             map.put("status", 200);
+            map.put("orderId", orderId);
             map.put("msg", "提交订单成功");
         } catch (Exception e) {
             map.put("status", 500);
@@ -90,8 +96,12 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Boolean changeOrderStatus(Integer orderId, int changeStatusNum) {
-        if (changeStatusNum - 1 != this.orderDao.queryOrderStatusById(orderId)) {
-            return false;
+        Integer orderStatus = this.orderDao.queryOrderStatusById(orderId);
+        if (changeStatusNum - 1 != orderStatus) {
+            //1跳到3可以，代发货可以直接跳转到待评价
+            if (!(orderStatus == 1 && changeStatusNum == 3)) {
+                return false;
+            }
         }
         Order order = new Order();
         order.setOrderId(orderId);

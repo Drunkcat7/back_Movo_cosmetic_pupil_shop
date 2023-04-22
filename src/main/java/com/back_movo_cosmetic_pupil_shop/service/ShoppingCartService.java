@@ -23,7 +23,7 @@ public interface ShoppingCartService {
      * @param shoppingCart 实例对象
      * @return 影响行数
      */
-    Map<String,Object> addCart(ShoppingCart shoppingCart);
+    Map<String, Object> addCart(ShoppingCart shoppingCart);
 
 
     /**
@@ -58,4 +58,10 @@ public interface ShoppingCartService {
      * @return 是否删除成功
      */
     Boolean delGood(Integer cartId, Integer uid);
+
+
+    Boolean delGoodsByGoodId(Integer goodId, Integer gTypeId, Integer uid);
+
+
 }
+

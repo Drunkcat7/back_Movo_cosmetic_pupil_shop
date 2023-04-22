@@ -101,4 +101,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return i != 0;
     }
 
+
+    @Override
+    public Boolean delGoodsByGoodId(Integer goodId, Integer gTypeId, Integer uid) {
+        int i = this.shoppingCartDao.deleteByIdGoodsItem(goodId, gTypeId, uid);
+        return i != 0;
+    }
+
 }

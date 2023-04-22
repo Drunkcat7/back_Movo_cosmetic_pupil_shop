@@ -90,11 +90,13 @@ public class AddressController {
 
     /**
      * 通过 uid 查询
+     *
      * @param user
      * @return
      */
     @GetMapping("/user/defaultContactAddress")
     public List<Address> queryByUidAndDefaultContact(@CurrentUser CurrentUserInfo user) {
+
         return this.addressService.queryByUidAndDefaultContact(user.getUid());
     }
 
