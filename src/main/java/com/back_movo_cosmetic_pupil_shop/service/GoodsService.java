@@ -1,6 +1,7 @@
 package com.back_movo_cosmetic_pupil_shop.service;
 
 import com.back_movo_cosmetic_pupil_shop.entity.AppGoodFrom;
+import com.back_movo_cosmetic_pupil_shop.entity.Classification;
 import com.back_movo_cosmetic_pupil_shop.entity.Goods;
 import com.back_movo_cosmetic_pupil_shop.entity.GoodsImgFiles;
 import org.springframework.data.domain.Page;
@@ -72,6 +73,7 @@ public interface GoodsService {
      * @return
      */
     Boolean updateGoodsData(AppGoodFrom appGoodFrom);
+
     /**
      * 上传商品图片
      *
@@ -79,4 +81,10 @@ public interface GoodsService {
      * @return
      */
     Map<String, Object> uploadFile(GoodsImgFiles goodsImgFiles);
+
+    /**
+     * 查询所有分类信息
+     * @return
+     */
+    List<Classification> queryClassAll();
 }

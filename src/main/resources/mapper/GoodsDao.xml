@@ -106,6 +106,12 @@
         </set>
         where good_id = #{goodId}
     </update>
+
+    <select id="getNewGoodId" resultType="java.lang.Integer">
+        SELECT good_id
+        FROM `goods`
+        WHERE good_id = (SELECT MAX(good_id) FROM `goods`);
+    </select>
     <!--    ================================分界线=============================================-->
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="GoodsMap">

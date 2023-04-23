@@ -68,6 +68,8 @@ public interface GoodsDao {
      * @return 影响行数
      */
     int update(Goods goods);
+
+    Integer getNewGoodId();
     /** ----------------------分～杰线---------------------- **/
 
 

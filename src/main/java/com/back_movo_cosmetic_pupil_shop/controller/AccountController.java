@@ -1,19 +1,12 @@
 package com.back_movo_cosmetic_pupil_shop.controller;
 
 import com.back_movo_cosmetic_pupil_shop.entity.Account;
-import com.back_movo_cosmetic_pupil_shop.my_interceptor.CurrentUser;
-import com.back_movo_cosmetic_pupil_shop.my_interceptor.CurrentUserInfo;
 import com.back_movo_cosmetic_pupil_shop.service.AccountService;
 import com.back_movo_cosmetic_pupil_shop.tools.GetStatus;
-import com.back_movo_cosmetic_pupil_shop.tools.JwtUtil;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

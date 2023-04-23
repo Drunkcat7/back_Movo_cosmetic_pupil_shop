@@ -4,11 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.back_movo_cosmetic_pupil_shop.dao.ClassificationDao;
 import com.back_movo_cosmetic_pupil_shop.dao.GoodTypesDao;
-import com.back_movo_cosmetic_pupil_shop.entity.AppGoodFrom;
-import com.back_movo_cosmetic_pupil_shop.entity.GoodTypes;
-import com.back_movo_cosmetic_pupil_shop.entity.Goods;
+import com.back_movo_cosmetic_pupil_shop.entity.*;
 import com.back_movo_cosmetic_pupil_shop.dao.GoodsDao;
-import com.back_movo_cosmetic_pupil_shop.entity.GoodsImgFiles;
 import com.back_movo_cosmetic_pupil_shop.service.GoodsService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,10 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * (Goods)表服务实现类
@@ -119,8 +114,10 @@ public class GoodsServiceImpl implements GoodsService {
             return false;
         }
         goodsDao.insert(appGoodFrom.getGoods());
+        Integer goodId = goodsDao.getNewGoodId();
         List<GoodTypes> goodTypesList = appGoodFrom.getGoodTypesList();
         for (GoodTypes goodTypes : goodTypesList) {
+            goodTypes.setGoodId(goodId);
             goodTypesDao.insert(goodTypes);
         }
         return true;
@@ -159,7 +156,16 @@ public class GoodsServiceImpl implements GoodsService {
         Map<String, Object> map = new HashMap<>();
         //请求所属的class的名称
         String className = classDao.queryNameById(goodsImgFiles.getClassId());
-        long count = goodsDao.count(goodsImgFiles.getClassId()) + 1;
+        //如果有goodId的话就不是加一，且是查询他的序号
+        long count;
+        if (goodsImgFiles.getGoodId() == null || goodsImgFiles.getGoodId() == 0) {
+            count = goodsDao.count(goodsImgFiles.getClassId()) + 1;
+        } else {
+            Goods goods = goodsDao.queryById(goodsImgFiles.getGoodId());
+            String regEx = "[^0-9]";
+            count = Long.parseLong(Pattern.compile(regEx).matcher(goods.getMainImg()).replaceAll("").trim());
+        }
+
         String classHead = className + count;
         String mainImg = uploadImg(goodsImgFiles.getMainImg(), "主图/" + classHead + "_主图");
         String topImg = uploadImg(goodsImgFiles.getTopImg(), classHead + "/" + classHead + "_顶图");
@@ -182,35 +188,50 @@ public class GoodsServiceImpl implements GoodsService {
 
     //上传多文件
     public List<String> uploadImgGroup(MultipartFile[] files, String filePath) {
+        if (files == null) {
+            return null;
+        }
         List<String> imgUrl = new ArrayList<>();
-
         for (int i = 0; i < files.length; i++) {
-            imgUrl.add(this.uploadImg(files[i], filePath + i));
+            imgUrl.add(this.uploadImg(files[i], filePath + files[i].getOriginalFilename().split("\\.")[0]));
         }
         return imgUrl;
     }
 
     //上传单文件
     public String uploadImg(MultipartFile file, String filePath) {
+        if (file == null) {
+            return "";
+        }
         //文件后缀
         String fileSuffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
         // 文件格式
-        //System.out.println(filePathHead + filePath + fileSuffix);
+        System.out.println(filePathHead + filePath + fileSuffix);
         //System.out.println("返回的数据：" + filePath + fileSuffix);
-//        // 文件全路径
-//        File targetFile = new File(filePathHead + filePath + fileSuffix);
-//        // 判断文件存储目录是否存在，不存在则新建目录
-//        if (!targetFile.getParentFile().exists()) {
-//            targetFile.getParentFile().mkdir();
-//        }
+        // 文件全路径
+        File targetFile = new File(filePathHead + filePath + fileSuffix);
+        // 判断文件存储目录是否存在，不存在则新建目录
+        if (!targetFile.getParentFile().exists()) {
+            targetFile.getParentFile().mkdir();
+        }
         try {
-//            // 将图片保存
-//            file.transferTo(targetFile);
+            // 将图片保存
+            file.transferTo(targetFile);
             return filePath + fileSuffix;
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
         }
+    }
+
+    /**
+     * 获取所有分类信息
+     *
+     * @return
+     */
+    @Override
+    public List<Classification> queryClassAll() {
+        return this.classDao.queryClassAll();
     }
 
 }

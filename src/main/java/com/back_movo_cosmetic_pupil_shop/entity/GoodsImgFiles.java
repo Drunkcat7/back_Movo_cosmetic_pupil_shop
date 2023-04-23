@@ -15,4 +15,5 @@ public class GoodsImgFiles {
     MultipartFile[] detailsFigure;
     MultipartFile[] gTypeList;
     Integer classId;
+    Integer goodId;
 }

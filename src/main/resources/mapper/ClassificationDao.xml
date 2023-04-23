@@ -14,5 +14,8 @@
         where class_id = #{classId}
     </select>
 
+    <select id="queryClassAll" resultMap="ClassificationMap">
+        select * from classification
+    </select>
 </mapper>
 

@@ -1,20 +1,18 @@
 package com.back_movo_cosmetic_pupil_shop.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.back_movo_cosmetic_pupil_shop.entity.AppGoodFrom;
+import com.back_movo_cosmetic_pupil_shop.entity.Classification;
 import com.back_movo_cosmetic_pupil_shop.entity.Goods;
 import com.back_movo_cosmetic_pupil_shop.entity.GoodsImgFiles;
 import com.back_movo_cosmetic_pupil_shop.service.GoodsService;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cglib.beans.BeanMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * (Goods)表控制层
@@ -175,5 +173,12 @@ public class GoodsController {
         return this.goodsService.uploadFile(goodsImgFiles);
     }
 
-
+    /**
+     * 获取全部分类
+     * @return
+     */
+    @GetMapping("/admin/classAll")
+    public List<Classification> classAll() {
+        return this.goodsService.queryClassAll();
+    }
 }

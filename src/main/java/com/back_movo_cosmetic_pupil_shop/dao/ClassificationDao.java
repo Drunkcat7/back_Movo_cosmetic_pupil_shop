@@ -22,6 +22,13 @@ public interface ClassificationDao {
      */
     String queryNameById(Integer classId);
 
+    /**
+     * 查询所有分类信息
+     * @return
+     */
+    List<Classification> queryClassAll();
+
+
 
 }
 
